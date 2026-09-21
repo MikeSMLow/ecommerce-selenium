@@ -10,7 +10,7 @@ import java.time.Duration;
 public class DriverFactory {
 	
 	// ThreadLocal for isolated WebDriver instance per thread
-	private static final ThreadLocal<WebDriver> driver = new ThreadLocal();
+	private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	
 	// Private constructor prevents instantiation of this utility class
 	private DriverFactory() {
@@ -26,20 +26,32 @@ public class DriverFactory {
 		if (driver.get() == null) {
 			WebDriver webDriver;
 			
+			// Determine headless mode from GitHub Actions CI environment or local Maven flag
+			boolean isHeadless = Boolean.parseBoolean(System.getenv("CI")) || Boolean.parseBoolean(System.getProperty("headless"));
+			
 			switch (browser.toLowerCase()) {
 			case "firefox":
 				FirefoxOptions firefoxOptions = new FirefoxOptions();
+				if (isHeadless) {
+					firefoxOptions.addArguments("--headless");
+				}
 				webDriver = new FirefoxDriver(firefoxOptions);
 				break;
 			case "chrome":
 			default:
 				ChromeOptions chromeOptions = new ChromeOptions();
-				// Add arguments like "--headless" here for CI pipelines
+				if (isHeadless) {
+					chromeOptions.addArguments("--headless=new");
+					chromeOptions.addArguments("--window-size=1920,1080"); 
+					chromeOptions.addArguments("--disable-gpu");
+				}
 				webDriver = new ChromeDriver(chromeOptions);
 				break;
 			}
 			
-			webDriver.manage().window().maximize();
+			if (!isHeadless) {
+			    webDriver.manage().window().maximize();
+			}
 			driver.set(webDriver);
 		}
 	}
