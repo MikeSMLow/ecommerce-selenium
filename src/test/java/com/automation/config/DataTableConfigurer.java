@@ -1,8 +1,7 @@
-package com.automation.hooks;
+package com.automation.config;
 
 import java.lang.reflect.Type;
 
-import io.cucumber.java.DefaultDataTableCellTransformer;
 import io.cucumber.java.DefaultDataTableEntryTransformer;
 import io.cucumber.java.DefaultParameterTransformer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +14,6 @@ public class DataTableConfigurer {
      * Instructs Cucumber to use Jackson to automatically convert Data Table rows 
      * into POJOs (like your Product class) by matching the table headers to the variable names.
      */
-    @DefaultDataTableCellTransformer
     @DefaultDataTableEntryTransformer
     @DefaultParameterTransformer
     public Object transform(Object fromValue, Type toValueType) {

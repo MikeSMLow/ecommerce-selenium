@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 public class Hooks {
 	
-	@Before
+	@Before("not @api")
 	public void setup(Scenario scenario) {
 		// Here you can dynamically read the browser from a config file or Maven arguments.
         // E.g., mvn clean test -Dbrowser=firefox. We default to chrome if nothing is passed.
@@ -20,7 +20,7 @@ public class Hooks {
 		DriverFactory.initDriver(browser);
 	}
 	
-	@After
+	@After("not @api")
 	public void teardown(Scenario scenario) {
 		WebDriver driver = DriverFactory.getDriver();
 		

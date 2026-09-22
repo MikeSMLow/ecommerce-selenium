@@ -3,6 +3,7 @@ package com.automation.pages;
 import org.openqa.selenium.By;
 
 import com.automation.component.ProductCard;
+import com.automation.core.BasePage;
 
 public class HomePage extends BasePage {
 
