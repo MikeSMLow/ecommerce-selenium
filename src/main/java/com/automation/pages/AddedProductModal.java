@@ -3,6 +3,8 @@ package com.automation.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
+import com.automation.core.BasePage;
+
 public class AddedProductModal extends BasePage {
 	
 	private final By rootModal;

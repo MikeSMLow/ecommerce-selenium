@@ -17,13 +17,12 @@ import io.cucumber.java.en.When;
 
 public class ProductSteps {
 	
-	private HomePage homePage;
+	private final HomePage homePage = new HomePage();
 	
 	@Given("the user navigates to the home page")
 	public void userNavigatesToHomePage() {
 		//Direct browser navigation
 		DriverFactory.getDriver().get("https://automationexercise.com");
-		homePage = new HomePage();
 		Assertions.assertTrue(homePage.isPageLoaded(), "Home page failed to load.");
 	}
 	

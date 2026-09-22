@@ -1,4 +1,4 @@
-package com.automation.pages;
+package com.automation.core;
 
 import java.time.Duration;
 
@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
 import com.automation.core.DriverFactory;
 
@@ -66,6 +67,12 @@ public class BasePage {
 		scrollIntoView(element);
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element).perform();
+	}
+	
+	protected void selectByVisibleText(By locator, String text) {
+		waitForVisibility(locator);
+		Select dropdown = new Select(DriverFactory.getDriver().findElement(locator));
+		dropdown.selectByVisibleText(text);
 	}
 
 }

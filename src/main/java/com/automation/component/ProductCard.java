@@ -1,8 +1,9 @@
 package com.automation.component;
 
-import com.automation.pages.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.pagefactory.ByChained;
+
+import com.automation.core.BasePage;
 
 public class ProductCard extends BasePage {
 	
