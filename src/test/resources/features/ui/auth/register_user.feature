@@ -23,3 +23,8 @@ When the user fills the account details with the following data:
       | Mobile      | 5551234567      |
 And the user clicks the create account button
 Then a successful account creation message should be displayed
+When the user clicks the continue button on the success screen
+Then the user should see that they are logged in as "Miguel"
+When the user clicks the delete account button
+Then a successful account deletion message should be displayed
+And the user clicks the continue button on the deletion screen

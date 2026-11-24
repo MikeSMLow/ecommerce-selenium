@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 
-import com.automation.component.ProductCard;
+import com.automation.components.ProductCard;
 import com.automation.core.DriverFactory;
 import com.automation.models.Product;
 import com.automation.pages.AddedProductModal;
