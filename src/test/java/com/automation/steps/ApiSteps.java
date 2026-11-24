@@ -1,19 +1,29 @@
 package com.automation.steps;
 
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
-
-import com.automation.models.Product;
+import static io.restassured.RestAssured.given;
 
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Assertions;
+
+import com.automation.config.ApiConfig;
+import com.automation.models.AccountDetails;
+import com.automation.models.Product;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
 public class ApiSteps {
 
 	private Response apiResponse;
+	private AccountDetails apiUser;
 	
 	@When("the user requests the product list from the API")
 	public void requestProductList() {
@@ -52,5 +62,69 @@ public class ApiSteps {
 		
 		// Because your POJO uses BigDecimal, Jackson automatically converted the API price for you!
         System.out.println("First product price: " + products.get(0).getPrice());
+	}
+	
+	@Given("the user data is prepared for {string}")
+	public void prepareUserData(String email) {
+		// Prepare the exact same POJO used in the UI tests
+		apiUser = AccountDetails.builder()
+				.name("Miguel Sanchez")
+				.title("Mr.")
+				.firstName("Miguel")
+				.lastName("Sanchez")
+				.email(email)
+				.password("SecureApiPass123!")
+				.build();
+	}
+	
+	@When("a POST request is made to create the account")
+	public void createAccountViaApi() {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> formParams = mapper.convertValue(
+				apiUser,
+				new TypeReference<Map<String, Object>>() {}
+		);
+		
+		apiResponse = given()
+				.spec(ApiConfig.getBaseSpec())
+				.formParams(formParams)
+				.post("/api/createAccount");
+	}
+	
+	@Then("the API should return a {string} success message")
+	public void verifySuccessMessage(String expectedMessage) {
+		JsonPath jsonPath = new JsonPath(apiResponse.asString());
+		
+		// Parse the JSON tree manually
+		String actualMessage = jsonPath.getString("message");
+		
+		Assertions.assertEquals(expectedMessage, actualMessage,
+				"The API success message did not match.");
+	}
+	
+	@When("a GET request is made to fetch the account details for {string}")
+	public void fetchAccountDetails(String email) {
+		apiResponse = given()
+					.spec(ApiConfig.getBaseSpec())
+					.queryParam("email", email)
+					.get("/api/getUserDetailByEmail");
+	}
+	
+	@Then("the reponse should contain the user's account correct name and email")
+	public void verifyAccountDetails() {
+		JsonPath jsonPath = new JsonPath(apiResponse.asString());
+		
+		Assertions.assertEquals(200, jsonPath.getInt("responseCode"));
+		Assertions.assertEquals(apiUser.getFirstName(), jsonPath.getString("user.first_name"));
+		Assertions.assertEquals(apiUser.getEmail(), jsonPath.getString("user.email"));
+	}
+	
+	@When("a DELETE request is made using the account email and password")
+	public void deleteAccountViaApi() {
+		apiResponse = given()
+					.spec(ApiConfig.getBaseSpec())
+					.formParam("email", apiUser.getEmail())
+					.formParam("password", apiUser.getPassword())
+					.delete("/api/deleteAccount");
 	}
 }

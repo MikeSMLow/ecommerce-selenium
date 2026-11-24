@@ -40,6 +40,15 @@ public class DriverFactory {
 			case "chrome":
 			default:
 				ChromeOptions chromeOptions = new ChromeOptions();
+				chromeOptions.addArguments(
+					    "--host-resolver-rules=" +
+					    "MAP pagead2.googlesyndication.com 127.0.0.1," +
+					    "MAP googleads.g.doubleclick.net 127.0.0.1," +
+					    "MAP tpc.googlesyndication.com 127.0.0.1," +
+					    "MAP ep1.adtrafficquality.google 127.0.0.1," +
+					    "MAP ep2.adtrafficquality.google 127.0.0.1," +
+					    "MAP fundingchoicesmessages.google.com 127.0.0.1"
+					);
 				if (isHeadless) {
 					chromeOptions.addArguments("--headless=new");
 					chromeOptions.addArguments("--window-size=1920,1080"); 

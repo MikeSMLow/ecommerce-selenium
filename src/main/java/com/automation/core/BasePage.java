@@ -74,5 +74,23 @@ public class BasePage {
 		Select dropdown = new Select(DriverFactory.getDriver().findElement(locator));
 		dropdown.selectByVisibleText(text);
 	}
+	
+	/**
+     * Useful for infinite-scroll feeds or lazy-loading product grids 
+     * where you need to trigger network requests by scrolling down slightly.
+     */
+    protected void scrollByPixels(int x, int y) {
+        JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getDriver();
+        js.executeScript("window.scrollBy(arguments[0], arguments[1]);", x, y);
+    }
+
+    /**
+     * Bypasses the DOM to instantly snap to the absolute bottom of the page.
+     * Helpful for verifying footers or triggering global lazy-loads.
+     */
+    protected void scrollToBottom() {
+        JavascriptExecutor js = (JavascriptExecutor) DriverFactory.getDriver();
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    }
 
 }
