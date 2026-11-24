@@ -26,6 +26,7 @@ Map<String, String> entry = new HashMap<>();
                 .year(entry.get("Year"))
                 .firstName(entry.get("First Name"))
                 .lastName(entry.get("Last Name"))
+                .email(entry.get("Email"))
                 .address(entry.get("Address"))
                 .country(entry.get("Country"))
                 .state(entry.get("State"))

@@ -1,4 +1,4 @@
-package com.automation.component;
+package com.automation.components;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.pagefactory.ByChained;

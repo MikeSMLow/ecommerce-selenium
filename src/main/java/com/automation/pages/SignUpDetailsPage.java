@@ -28,6 +28,7 @@ public class SignUpDetailsPage extends BasePage {
 	
 	private final By createAccountButton = By.cssSelector("[data-qa='create-account']");
 	private final By accountCreatedTitle = By.cssSelector("[data-qa='account-created']");
+	private final By continueButton = By.cssSelector("[data-qa='continue-button']");
 
 	public boolean isPageLoaded() {
 		try {
@@ -74,5 +75,9 @@ public class SignUpDetailsPage extends BasePage {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	public void clickContinue() {
+		click(continueButton);
 	}
 }

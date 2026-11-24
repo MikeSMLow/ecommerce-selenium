@@ -3,6 +3,8 @@ package com.automation.steps;
 import com.automation.core.DriverFactory;
 import com.automation.pages.LoginPage;
 import com.automation.pages.SignUpDetailsPage;
+import com.automation.pages.HomePage;
+import com.automation.pages.AccountDeletedPage;
 import com.automation.models.AccountDetails;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,6 +16,8 @@ public class SignUpSteps {
 
 	private final LoginPage loginPage = new LoginPage();
 	private final SignUpDetailsPage signUpDetailsPage = new SignUpDetailsPage();
+	private final HomePage homePage = new HomePage();
+    private final AccountDeletedPage accountDeletedPage = new AccountDeletedPage();
 	
 	@Given("the user is on the login and signup page")
 	public void navigateToLoginPage() {
@@ -50,4 +54,31 @@ public class SignUpSteps {
 	public void verifyAccountCreated() {
 		Assertions.assertTrue(signUpDetailsPage.isAccountCreated(), "Account Created confirmation was not displayed.");
 	}
+	
+	@When("the user clicks the continue button on the success screen")
+    public void clickContinueAfterSignup() {
+        signUpDetailsPage.clickContinue();
+    }
+
+    @Then("the user should see that they are logged in as {string}")
+    public void verifyLoggedInUser(String username) {
+        Assertions.assertTrue(homePage.isLoggedInAs(username), 
+            "User is not logged in, or the username does not match.");
+    }
+
+    @When("the user clicks the delete account button")
+    public void deleteAccount() {
+        homePage.clickDeleteAccount();
+    }
+
+    @Then("a successful account deletion message should be displayed")
+    public void verifyAccountDeleted() {
+        Assertions.assertTrue(accountDeletedPage.isAccountDeleted(), 
+            "Account Deleted confirmation was not displayed.");
+    }
+
+    @When("the user clicks the continue button on the deletion screen")
+    public void clickContinueAfterDeletion() {
+        accountDeletedPage.clickContinue();
+    }
 }
