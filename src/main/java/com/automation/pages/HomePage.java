@@ -11,6 +11,7 @@ public class HomePage extends BasePage {
 	private final By homeSlider = By.cssSelector("section#slider");
 	private final By productCards = By.className("product-image-wrapper");
 	private final By deleteAccountLink = By.cssSelector("a[href='/delete_account']");
+	private final By test = By.cssSelector("");
 	
 	// 2. Action Methods
 	
@@ -57,3 +58,4 @@ public class HomePage extends BasePage {
     }
 
 }
+
